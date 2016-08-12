@@ -27,7 +27,7 @@ cp $CODE_DIR/*.go $CODE_DIR/docker/payment/
 
 REPO=${GROUP}/$(basename payment);
 
-$DOCKER_CMD build -t ${REPO}-dev $CODE_DIR/docker/payment;
+$DOCKER_CMD build -t ${REPO}-dev -f $CODE_DIR/docker/payment/Dockerfile $CODE_DIR/docker/payment;
 $DOCKER_CMD create --name payment ${REPO}-dev;
 $DOCKER_CMD cp payment:/app/main $CODE_DIR/docker/payment/app;
 $DOCKER_CMD rm payment;
