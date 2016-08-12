@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/microservices-demo/microservices-demo/sockshop/payment"
+	"github.com/microservices-demo/payment"
 	"golang.org/x/net/context"
 	"net/http"
 	"os"
