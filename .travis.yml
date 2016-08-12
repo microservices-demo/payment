@@ -23,9 +23,6 @@ script:
 after_success:
   - set -e;
   # - $HOME/gopath/bin/goveralls -service=travis-ci
-  - if [ -z "$DOCKER_PASS" ] ; then
-  echo "This is a build triggered by an external PR. Skipping docker push.";
-  exit 0;
-  fi;
+  - if [ -z "$DOCKER_PASS" ] ; then echo "This is a build triggered by an external PR. Skipping docker push."; exit 0; fi;
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS;
   - ./scripts/push.sh
