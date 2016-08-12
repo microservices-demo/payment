@@ -21,8 +21,7 @@ else
 fi
 CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
 echo $CODE_DIR
- 
-cp -r $CODE_DIR/images/ $CODE_DIR/docker/payment/images/
+
 cp -r $CODE_DIR/cmd/ $CODE_DIR/docker/payment/cmd/
 cp $CODE_DIR/*.go $CODE_DIR/docker/payment/
 
