@@ -1,7 +1,6 @@
 import re
-from random import random
 from subprocess import Popen, PIPE
-
+from random import random
 
 # From http://blog.bordage.pro/avoid-docker-py/
 class Docker:
@@ -12,7 +11,7 @@ class Docker:
     def random_container_name(self, prefix):
         retstr = prefix + '-'
         for i in range(5):
-            retstr += chr(int(round(random() * (122 - 97) + 97)))
+            retstr += chr(int(round(random() * (122-97) + 97)))
         return retstr
 
     def get_container_ip(self, ctr_name):
@@ -29,10 +28,10 @@ class Docker:
         if p.wait() != 0:
             p.stdout.close()
             p.stderr.close()
-            raise RuntimeError(str(stderr, 'utf-8'))
+            raise RuntimeError(str(stderr.decode('utf-8')))
         p.stdout.close()
         p.stderr.close()
-        return str(out, 'utf-8')
+        return str(out.decode('utf-8'))
 
     def start_container(self, container_name="", image="", cmd="", host=""):
         command = ['docker', 'run', '-d', '-h', host, '--name', container_name, image]
