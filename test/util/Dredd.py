@@ -4,9 +4,9 @@ import os
 import unittest
 
 class Dredd:
-    image = 'weaveworksdemos/openapi:6aca04cbdd63ee6f2033cf201b9c5cf39b6d8438'
+    image = 'weaveworksdemos/openapi'
     container_name = ''
-    def test_against_endpoint(self, service, api_endpoint, links=[], env=[]):
+    def test_against_endpoint(self, service, api_endpoint, links=[], env=[], dump_streams=False):
         self.container_name = Docker().random_container_name('openapi')
         command = ['docker', 'run',
                    '-h', 'openapi',
@@ -24,7 +24,7 @@ class Dredd:
                         api_endpoint,
                         "-f",
                         "/tmp/specs/hooks.js".format(service)])
-        
-        out = Docker().execute(command)
+        out = Docker().execute(command, dump_streams=dump_streams)
+ 
         Docker().kill_and_remove(self.container_name)
         return out
