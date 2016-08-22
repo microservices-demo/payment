@@ -10,7 +10,7 @@
         }
     },
     "host": "payment",
-    "basePath": "/payments",
+    "basePath": "/",
     "securityDefinitions": {},
     "schemes": [
         "http"
@@ -27,7 +27,7 @@
 		"description": "",
 		"operationId": "/health > GET",
 		"produces": [
-		    "application/json"
+		    "application/json; charset=utf-8"
 		],
 		"parameters": [],
 		"responses": {
@@ -39,6 +39,24 @@
 		    }
 		}
 	    }
+	},
+	"/paymentAuth": {
+	    "post": {
+		"description": "Payment authorisation",
+		"operationId": "/paymentAuth > POST",
+		"produces": [
+		    "application/json; charset=utf-8"
+		],
+		"responses": {
+		    "200": {
+			"description": "",
+			"schema": {
+			    "$ref": "#/definitions/paymentAuth"
+			}
+		    }
+		}
+                
+	    }
 	}
     },
     "definitions": {
@@ -46,16 +64,29 @@
             "title": "Health",
             "type": "object",
             "properties": {
-		"_links": {
-		    "type": "object"
+		"status": {
+		    "type": "string"
 		},
-		"page": {
-		    "type": "object"
+		"time": {
+		    "type": "string"
 		}
             },
             "required": [
-		'page'
+		"status",
+		"time"
             ]
-        }
+        },
+	"paymentAuth": {
+            "title": "paymentAuth response",
+            "type": "object",
+            "properties": {
+		"authorised": {
+		    "type": "boolean"
+		}
+            },
+            "required": [
+		"authorised"
+            ]
+	}
     }
 }
