@@ -27,7 +27,7 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, logger log.Logger) http.H
 		encodeAuthoriseResponse,
 		options...,
 	))
-	r.Methods("GET").PathPrefix("/health").Handler(httptransport.NewServer(
+	r.Methods("GET").Path("/health").Handler(httptransport.NewServer(
 		ctx,
 		e.HealthEndpoint,
 		decodeHealthRequest,
