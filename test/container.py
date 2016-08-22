@@ -1,6 +1,7 @@
 import argparse
 import sys
 import unittest
+import os
 from util.Api import Api
 from time import sleep
 
@@ -21,7 +22,7 @@ class PaymentContainerTest(unittest.TestCase):
                    '-d',
                    '--name', PaymentContainerTest.container_name,
                    '-h', 'payment',
-                   'weaveworksdemos/payment:' + self.TAG]
+                   'weaveworksdemos/payment-dev:' + self.TAG]
         Docker().execute(command)
         self.ip = Docker().get_container_ip(PaymentContainerTest.container_name)
 
@@ -51,6 +52,10 @@ if __name__ == '__main__':
     parser.add_argument('unittest_args', nargs='*')
     args = parser.parse_args()
     PaymentContainerTest.TAG = args.tag
+
+    if os.environ["TAG"] != "":
+        PaymentContainerTest.TAG = os.environ["TAG"]
+    
     # Now set the sys.argv to the unittest_args (leaving sys.argv[0] alone)
     sys.argv[1:] = args.unittest_args
     unittest.main()
