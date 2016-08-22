@@ -28,11 +28,7 @@ class Docker:
     def execute(self, command, dump_streams=False):
         print("Running: " + ' '.join(command))
         p = Popen(command, stdout=PIPE, stderr=PIPE)
-        p.wait()
-        out = p.stdout.read()
-        err = p.stderr.read()
-        p.stdout.close()
-        p.stderr.close()
+        out, err = p.communicate()
         if dump_streams == True:
             print(out.decode('utf-8'))
             print(err.decode('utf-8'))
