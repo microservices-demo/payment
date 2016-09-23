@@ -48,14 +48,15 @@ class PaymentContainerTest(unittest.TestCase):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--tag', default="latest", help='The tag of the image to use. (default: latest)')
+    default_tag = "latest"
+    parser.add_argument('--tag', default=default_tag, help='The tag of the image to use. (default: latest)')
     parser.add_argument('unittest_args', nargs='*')
     args = parser.parse_args()
     PaymentContainerTest.TAG = args.tag
 
-    if os.environ["TAG"] != "":
-        PaymentContainerTest.TAG = os.environ["TAG"]
-    
+    if PaymentContainerTest.TAG == "":
+        PaymentContainerTest.TAG = default_tag
+
     # Now set the sys.argv to the unittest_args (leaving sys.argv[0] alone)
     sys.argv[1:] = args.unittest_args
     unittest.main()
