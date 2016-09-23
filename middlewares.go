@@ -2,6 +2,7 @@ package payment
 
 import (
 	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/metrics"
 	"time"
 )
 
@@ -32,4 +33,28 @@ func (mw loggingMiddleware) Authorise(amount float32) (auth Authorisation, err e
 		)
 	}(time.Now())
 	return mw.next.Authorise(amount)
+}
+
+type instrumentingService struct {
+	requestCount   metrics.Counter
+	requestLatency metrics.Histogram
+	Service
+}
+
+// NewInstrumentingService returns an instance of an instrumenting Service.
+func NewInstrumentingService(requestCount metrics.Counter, requestLatency metrics.Histogram, s Service) Service {
+	return &instrumentingService{
+		requestCount:   requestCount,
+		requestLatency: requestLatency,
+		Service:        s,
+	}
+}
+
+func (s *instrumentingService) Authorise(amount float32) (auth Authorisation, err error) {
+	defer func(begin time.Time) {
+		s.requestCount.With("method", "authorise").Add(1)
+		s.requestLatency.With("method", "authorise").Observe(time.Since(begin).Seconds())
+	}(time.Now())
+
+	return s.Service.Authorise(amount)
 }
