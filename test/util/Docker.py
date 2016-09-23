@@ -1,6 +1,7 @@
 import re
 from subprocess import Popen, PIPE
 from random import random
+import time
 
 # From http://blog.bordage.pro/avoid-docker-py/
 class Docker:
@@ -20,6 +21,7 @@ class Docker:
         return retstr
 
     def get_container_ip(self, ctr_name):
+        self.waitForContainerToStart(ctr_name)
         command = ['docker', 'inspect',
                    '--format', '\'{{.NetworkSettings.IPAddress}}\'',
                    ctr_name]
@@ -37,3 +39,13 @@ class Docker:
     def start_container(self, container_name="", image="", cmd="", host=""):
         command = ['docker', 'run', '-d', '-h', host, '--name', container_name, image]
         self.execute(command)
+
+    def waitForContainerToStart(self, ctr_name):
+        command = ['docker', 'inspect',
+                   '--format', '\'{{.State.Status}}\'',
+                   ctr_name]
+        status = re.sub(r'[^a-z]*', '', self.execute(command))
+        while status != "running":
+            time.sleep(1)
+            print("Status: " + status + ". Waiting for container to start.")
+            status = re.sub(r'[^a-z]*', '', self.execute(command))
