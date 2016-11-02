@@ -64,16 +64,26 @@
             "title": "Health",
             "type": "object",
             "properties": {
-		"status": {
-		    "type": "string"
-		},
-		"time": {
-		    "type": "string"
+		"health": {
+		    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "service": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string"
+                            },
+                            "time": {
+                                "type": "string"
+                            }
+                        }
+                    }
 		}
             },
             "required": [
-		"status",
-		"time"
+                "health"
             ]
         },
 	"paymentAuth": {

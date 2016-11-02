@@ -1,13 +1,23 @@
 package payment
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 type Service interface {
 	Authorise(total float32) (Authorisation, error) // GET /paymentAuth
+	Health() []Health                               // GET /health
 }
 
 type Authorisation struct {
 	Authorised bool `json:"authorised"`
+}
+
+type Health struct {
+	Service string `json:"service"`
+	Status  string `json:"status"`
+	Time    string `json:"time"`
 }
 
 // NewFixedService returns a simple implementation of the Service interface,
@@ -37,6 +47,13 @@ func (s *service) Authorise(amount float32) (Authorisation, error) {
 	return Authorisation{
 		Authorised: authorised,
 	}, nil
+}
+
+func (s *service) Health() []Health {
+	var health []Health
+	app := Health{"payment", "OK", time.Now().String()}
+	health = append(health, app)
+	return health
 }
 
 var ErrInvalidPaymentAmount = errors.New("Invalid payment amount")
