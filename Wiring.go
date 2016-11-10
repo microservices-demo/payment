@@ -28,16 +28,16 @@ func WireUp(ctx context.Context, declineAmount float32) (http.Handler, log.Logge
 		service = NewInstrumentingService(
 			kitprometheus.NewCounterFrom(
 				stdprometheus.CounterOpts{
-					Namespace: "microservices_demo",
-					Subsystem: "payment",
-					Name:      "request_count",
+					Namespace: "http",
+					Subsystem: "requests",
+					Name:      "total",
 					Help:      "Number of requests received.",
 				},
 				fieldKeys),
 			kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-				Namespace: "microservices_demo",
-				Subsystem: "payment",
-				Name:      "request_latency_microseconds",
+				Namespace: "http",
+				Subsystem: "request",
+				Name:      "duration_microseconds_sum",
 				Help:      "Total duration of requests in microseconds.",
 			}, fieldKeys),
 			service,
