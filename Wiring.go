@@ -1,10 +1,11 @@
 package payment
 
 import (
-	"github.com/go-kit/kit/log"
-	"golang.org/x/net/context"
 	"net/http"
 	"os"
+
+	"github.com/go-kit/kit/log"
+	"golang.org/x/net/context"
 
 	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 	stdprometheus "github.com/prometheus/client_golang/prometheus"

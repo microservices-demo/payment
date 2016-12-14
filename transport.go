@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+
 	"github.com/go-kit/kit/log"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/net/context"
-	"io/ioutil"
-	"net/http"
 )
 
 // MakeHTTPHandler mounts the endpoints into a REST-y HTTP handler.
