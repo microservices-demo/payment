@@ -3,11 +3,12 @@ package payment
 import (
 	"bytes"
 	"encoding/json"
-	"golang.org/x/net/context"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"golang.org/x/net/context"
 )
 
 func TestComponent(t *testing.T) {
