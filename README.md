@@ -6,7 +6,7 @@ This build is built, tested and released by travis.
 
 ## Build
 
-#### Go
+#### Go tools
 In order to build the project locally you need to make sure that the repository directory is located in the correct
 $GOPATH directory: $GOPATH/src/github.com/microservices-demo/payment/. Once that is in place you can build by running:
 
@@ -15,7 +15,7 @@ cd $GOPATH/src/github.com/microservices-demo/payment/cmd/paymentsvc/
 go build -o payment
 ```
 
-The result is binary named `payment`, in the current directory. 
+The result is a binary named `payment`, in the current directory.
 
 #### Docker 
 `GROUP=weaveworksdemos COMMIT=test ./scripts/build.sh`
@@ -25,7 +25,7 @@ The result is binary named `payment`, in the current directory.
 
 ## Run 
 
-#### Go
+#### Go native
 
 If you followed to Go build instructions, you should have a "payment" binary in $GOPATH/src/github.com/microservices-demo/payment/cmd/paymentsvc/.
 To run it use:
