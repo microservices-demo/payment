@@ -45,16 +45,18 @@ ts=2016-12-14T12:06:50Z caller=main.go:29 transport=HTTP port=80
 
 You can now access the service via http://localhost:8082
 
-## Use
+## Check
 
-To use the service start by doing a GET request to the health endpoint:
+You can check the health of the service by doing a GET request to the health endpoint:
 
 ```
 curl http://localhost:8082/health
 {"health":[{"service":"payment","status":"OK","time":"2016-12-14 12:22:04.716316395 +0000 UTC"}]}
 ```
 
-You can also authorise a payment by POSTing to the paymentAuth endpoint:
+## Use
+
+You can authorise a payment by POSTing to the paymentAuth endpoint:
 
 ```
 curl -H "Content-Type: application/json" -X POST -d'{"Amount":40}'  http://localhost:8082/paymentAuth
