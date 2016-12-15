@@ -1,12 +1,9 @@
 NAME = weaveworksdemos/payment
 INSTANCE = payment
 
-.PHONY: default build copy
+.PHONY: default copy test
 
-default: build
-
-build:
-	docker build -t $(NAME)-dev -f ./docker/payment/Dockerfile .
+default: test
 
 copy:
 	docker create --name $(INSTANCE) $(NAME)-dev
@@ -16,5 +13,7 @@ copy:
 release:
 	docker build -t $(NAME) -f ./docker/payment/Dockerfile-release .
 
-run:
-	docker run --rm -p 8082:80 --name $(INSTANCE) $(NAME)
+test:
+	GROUP=weaveworksdemos COMMIT=$(COMMIT) ./scripts/build.sh
+	./test/test.sh unit.py
+	./test/test.sh container.py --tag $(COMMIT)

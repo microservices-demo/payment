@@ -7,9 +7,17 @@ class GoServices(unittest.TestCase):
         script_dir = os.path.dirname(os.path.realpath(__file__))
         code_dir = script_dir + "/.."
         goPath = os.environ['GOPATH']
-        command = ['docker', 'run', '--rm', '-v', goPath + ':/go/bin/', '-v', code_dir + ':/usr/src/', '-w',
-                   '/usr/src/', '-e', 'GOPATH=/go/bin', 'golang:1.6', 'go', 'test', '-v']
-        print(Docker().execute(command))
+        command = ['docker', 'run',
+            '--rm',
+            '-v', goPath + ':/go/',
+            '-v', code_dir + ':/go/src/github.com/microservices-demo/payment',
+            '-w', '/go/src/github.com/microservices-demo/payment',
+            '-e', 'GOPATH=/go/',
+            'golang:1.6',
+            'go', 'test', '-v', '-covermode=count', '-coverprofile=coverage.out'
+        ]
+
+        print(Docker().execute(command, dump_streams=True))
 
 
 if __name__ == '__main__':
