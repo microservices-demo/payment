@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/opentracing/opentracing-go"
 	"golang.org/x/net/context"
 )
 
@@ -15,7 +16,7 @@ func TestComponent(t *testing.T) {
 	// Mechanical stuff.
 	ctx := context.Background()
 
-	handler, logger := WireUp(ctx, float32(99.99))
+	handler, logger := WireUp(ctx, float32(99.99), opentracing.GlobalTracer())
 
 	ts := httptest.NewServer(handler)
 	defer ts.Close()
