@@ -8,14 +8,16 @@ import (
 	"net/http"
 
 	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/tracing/opentracing"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
+	stdopentracing "github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/net/context"
 )
 
 // MakeHTTPHandler mounts the endpoints into a REST-y HTTP handler.
-func MakeHTTPHandler(ctx context.Context, e Endpoints, logger log.Logger) http.Handler {
+func MakeHTTPHandler(ctx context.Context, e Endpoints, logger log.Logger, tracer stdopentracing.Tracer) http.Handler {
 	r := mux.NewRouter().StrictSlash(false)
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorLogger(logger),
@@ -27,14 +29,14 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, logger log.Logger) http.H
 		e.AuthoriseEndpoint,
 		decodeAuthoriseRequest,
 		encodeAuthoriseResponse,
-		options...,
+		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "POST /paymentAuth", logger)))...,
 	))
 	r.Methods("GET").Path("/health").Handler(httptransport.NewServer(
 		ctx,
 		e.HealthEndpoint,
 		decodeHealthRequest,
 		encodeHealthResponse,
-		options...,
+		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "GET /health", logger)))...,
 	))
 	r.Handle("/metrics", promhttp.Handler())
 	return r
