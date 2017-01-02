@@ -8,10 +8,11 @@ import (
 	"golang.org/x/net/context"
 
 	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
+	stdopentracing "github.com/opentracing/opentracing-go"
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
 )
 
-func WireUp(ctx context.Context, declineAmount float32) (http.Handler, log.Logger) {
+func WireUp(ctx context.Context, declineAmount float32, tracer stdopentracing.Tracer) (http.Handler, log.Logger) {
 	// Log domain.
 	var logger log.Logger
 	{
@@ -46,8 +47,8 @@ func WireUp(ctx context.Context, declineAmount float32) (http.Handler, log.Logge
 	}
 
 	// Endpoint domain.
-	endpoints := MakeEndpoints(service)
+	endpoints := MakeEndpoints(service, tracer)
 
-	handler := MakeHTTPHandler(ctx, endpoints, logger)
+	handler := MakeHTTPHandler(ctx, endpoints, logger, tracer)
 	return handler, logger
 }
