@@ -23,19 +23,6 @@ after_success:
 - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS;
 - "./scripts/push.sh"
 - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
-before_deploy:
-- eval "$(ssh-agent -s)"
-- chmod 600 $TRAVIS_BUILD_DIR/${REPO}_deploy_rsa
-- ssh-add $TRAVIS_BUILD_DIR/${REPO}_deploy_rsa
-addons:
-  ssh_known_hosts: "$BASTION"
-deploy:
-  provider: script
-  skip_cleanup: true
-  script: ssh -o StrictHostKeyChecking=no $BASTION_USER@$BASTION ./deploy.sh ${REPO}
-    $COMMIT
-  on:
-    branch: master
 notifications:
   slack:
     secure: cRuwjAXZg1i/1qqQeeIe/Q0WmNE/WKOBvG+IWz/EDE/8sJBx67TugGIovCqW9J4VZX5hpzhGbnWV2535/+aHihbaquQ+2kO81EJaILD7MUoi2mxoIHH0KoMe/nYnI/Grdjv6+JbqybLfK3nQfq7sBQDbG8Qi4b7IcO2Bxg5Q9vUsRzJ1/NYNdDk/coEPlEDs+R0WqxmEFmVGDlZvbzNyMEzokkZIW+xEu8T9Qjr51Jn84zfQ1J46+y/ZNLKI+5oScX6JI4a2cYEopfwX2lQREl1YuL+NyuQw0jJy/mxtkai501XTiht7XOYbI+kmwj9+NIGQWGHlXSD7Q4Nrd/0MdMaAlUXxb+xlZ4uY1IpZnMfWT4nIe1SIr3hnwtIOrVcEwrElWvhm3dk3Lmrz46v0JUXkYh4DxEnMucYon0Q+4EoNRHFQWMSeKQNXrZocxu/DMTgiISUsE3lmqbL7SKMV27wDgyGaiWqgmMcmbR6d/gOilbbLoK9L2wtRaqPMpk4lAoIyzxt+EIs/iT73UHV3lz3/7a3QuIwC3T4BqwykT+8ioUW9QBlB8OeW2QQxIerxAGD+/Rwlb3+mAvnqqPfkXMoyEu+0MPuQg4hA/+ZXba9wivZMk57AM14hJO9EPYhcsf6V8FJHn8WDdCKGW95Kp8el5eJ22V2mIUQ5WLygReM=
