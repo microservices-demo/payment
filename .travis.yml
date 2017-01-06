@@ -5,8 +5,6 @@ services:
 go:
 - 1.6
 before_install:
-- openssl aes-256-cbc -K $encrypted_1aa0da41d635_key -iv $encrypted_1aa0da41d635_iv
-  -in payment_deploy_rsa.enc -out payment_deploy_rsa -d
 - go get -u github.com/mattn/goveralls
 - go get -u github.com/FiloSottile/gvt
 - gvt restore
