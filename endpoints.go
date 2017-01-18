@@ -1,9 +1,11 @@
 package payment
 
 import (
+	"github.com/go-kit/kit/circuitbreaker"
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/tracing/opentracing"
 	stdopentracing "github.com/opentracing/opentracing-go"
+	"github.com/streadway/handy/breaker"
 	"golang.org/x/net/context"
 )
 
@@ -24,27 +26,29 @@ func MakeEndpoints(s Service, tracer stdopentracing.Tracer) Endpoints {
 
 // MakeListEndpoint returns an endpoint via the given service.
 func MakeAuthoriseEndpoint(s Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		var span stdopentracing.Span
-		span, ctx = stdopentracing.StartSpanFromContext(ctx, "authorize payment")
-		span.SetTag("service", "payment")
-		defer span.Finish()
-		req := request.(AuthoriseRequest)
-		authorisation, err := s.Authorise(req.Amount)
-		return AuthoriseResponse{Authorisation: authorisation, Err: err}, nil
-	}
+	return circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(
+		func(ctx context.Context, request interface{}) (response interface{}, err error) {
+			var span stdopentracing.Span
+			span, ctx = stdopentracing.StartSpanFromContext(ctx, "authorize payment")
+			span.SetTag("service", "payment")
+			defer span.Finish()
+			req := request.(AuthoriseRequest)
+			authorisation, err := s.Authorise(req.Amount)
+			return AuthoriseResponse{Authorisation: authorisation, Err: err}, nil
+	})
 }
 
 // MakeHealthEndpoint returns current health of the given service.
 func MakeHealthEndpoint(s Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		var span stdopentracing.Span
-		span, ctx = stdopentracing.StartSpanFromContext(ctx, "health check")
-		span.SetTag("service", "payment")
-		defer span.Finish()
-		health := s.Health()
-		return healthResponse{Health: health}, nil
-	}
+	return circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(
+		func(ctx context.Context, request interface{}) (response interface{}, err error) {
+			var span stdopentracing.Span
+			span, ctx = stdopentracing.StartSpanFromContext(ctx, "health check")
+			span.SetTag("service", "payment")
+			defer span.Finish()
+			health := s.Health()
+			return healthResponse{Health: health}, nil
+	})
 }
 
 // AuthoriseRequest represents a request for payment authorisation.
