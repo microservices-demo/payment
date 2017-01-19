@@ -11,7 +11,8 @@ type Service interface {
 }
 
 type Authorisation struct {
-	Authorised bool `json:"authorised"`
+	Authorised bool   `json:"authorised"`
+	Message    string `json:"message"`
 }
 
 type Health struct {
@@ -41,11 +42,16 @@ func (s *service) Authorise(amount float32) (Authorisation, error) {
 		return Authorisation{}, ErrInvalidPaymentAmount
 	}
 	authorised := false
+	message := "Payment declined"
 	if amount <= s.declineOverAmount {
 		authorised = true
+		message = "Payment authorised"
+	} else {
+		message = "Payment declined: amount exceeds $100"
 	}
 	return Authorisation{
 		Authorised: authorised,
+		Message: message
 	}, nil
 }
 
