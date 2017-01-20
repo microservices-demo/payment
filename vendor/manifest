@@ -18,6 +18,15 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/afex/hystrix-go/hystrix",
+			"repository": "https://github.com/afex/hystrix-go",
+			"vcs": "git",
+			"revision": "39520ddd07a9d9a071d615f7476798659f5a3b89",
+			"branch": "master",
+			"path": "/hystrix",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/apache/thrift/lib/go/thrift",
 			"repository": "https://github.com/apache/thrift",
 			"vcs": "git",
@@ -83,6 +92,15 @@
 			"vcs": "git",
 			"revision": "44cc805cf13205b55f69e14bcb69867d1ae92f98",
 			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/go-kit/kit/circuitbreaker",
+			"repository": "https://github.com/go-kit/kit",
+			"vcs": "git",
+			"revision": "bbb2306ec1318f1da5e9cba56bf933d0c7641e84",
+			"branch": "master",
+			"path": "/circuitbreaker",
 			"notests": true
 		},
 		{
@@ -397,11 +415,28 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/sony/gobreaker",
+			"repository": "https://github.com/sony/gobreaker",
+			"vcs": "git",
+			"revision": "809bcd5a528f344e95c2368796c9225d128f9b3e",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/stathat/go",
 			"repository": "https://github.com/stathat/go",
 			"vcs": "git",
 			"revision": "74669b9f388d9d788c97399a0824adbfee78400e",
 			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/streadway/handy/breaker",
+			"repository": "https://github.com/streadway/handy",
+			"vcs": "git",
+			"revision": "f450267a206e480d863d2a92846a40f6e2896b2a",
+			"branch": "master",
+			"path": "/breaker",
 			"notests": true
 		},
 		{

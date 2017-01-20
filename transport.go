@@ -8,11 +8,13 @@ import (
 	"net/http"
 
 	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/circuitbreaker"
 	"github.com/go-kit/kit/tracing/opentracing"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 	stdopentracing "github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+        "github.com/streadway/handy/breaker"
 	"golang.org/x/net/context"
 )
 
@@ -26,14 +28,14 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, logger log.Logger, tracer
 
 	r.Methods("POST").Path("/paymentAuth").Handler(httptransport.NewServer(
 		ctx,
-		e.AuthoriseEndpoint,
+		circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(e.AuthoriseEndpoint),
 		decodeAuthoriseRequest,
 		encodeAuthoriseResponse,
 		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "POST /paymentAuth", logger)))...,
 	))
 	r.Methods("GET").Path("/health").Handler(httptransport.NewServer(
 		ctx,
-		e.HealthEndpoint,
+		circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(e.HealthEndpoint),
 		decodeHealthRequest,
 		encodeHealthResponse,
 		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "GET /health", logger)))...,
