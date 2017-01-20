@@ -2,6 +2,7 @@ package payment
 
 import (
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -51,7 +52,7 @@ func (s *service) Authorise(amount float32) (Authorisation, error) {
 	}
 	return Authorisation{
 		Authorised: authorised,
-		Message: message
+		Message:    message,
 	}, nil
 }
 
