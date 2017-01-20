@@ -1,24 +1,24 @@
 package payment
 
-import (
-	"testing"
-)
+import "testing"
+import "fmt"
 
 func TestAuthorise(t *testing.T) {
 	result, _ := NewAuthorisationService(100).Authorise(10)
-	expected := true
-	if result.Authorised != expected {
+	expected := Authorisation{true, "Payment authorised"}
+	if result != expected {
 		t.Errorf("Authorise returned unexpected result: got %v want %v",
-			result.Authorised, expected)
+			result, expected)
 	}
 }
 
 func TestFailOverCertainAmount(t *testing.T) {
-	result, _ := NewAuthorisationService(10).Authorise(100)
-	expected := false
-	if result.Authorised != expected {
+	declineAmount := float32(10)
+	result, _ := NewAuthorisationService(declineAmount).Authorise(100)
+	expected := Authorisation{false, fmt.Sprintf("Payment declined: amount exceeds %.2f", declineAmount)}
+	if result != expected {
 		t.Errorf("Authorise returned unexpected result: got %v want %v",
-			result.Authorised, expected)
+			result, expected)
 	}
 }
 
