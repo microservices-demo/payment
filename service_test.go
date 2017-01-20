@@ -15,7 +15,7 @@ func TestAuthorise(t *testing.T) {
 func TestFailOverCertainAmount(t *testing.T) {
 	declineAmount := float32(10)
 	result, _ := NewAuthorisationService(declineAmount).Authorise(100)
-	expected := Authorisation{false, fmt.Sprintf("Payment declined: amount exceeds $%d", declineAmount)}
+	expected := Authorisation{false, fmt.Sprintf("Payment declined: amount exceeds %.2f", declineAmount)}
 	if result != expected {
 		t.Errorf("Authorise returned unexpected result: got %v want %v",
 			result, expected)
