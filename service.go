@@ -6,6 +6,9 @@ import (
 	"time"
 )
 
+// Middleware decorates a service.
+type Middleware func(Service) Service
+
 type Service interface {
 	Authorise(total float32) (Authorisation, error) // GET /paymentAuth
 	Health() []Health                               // GET /health

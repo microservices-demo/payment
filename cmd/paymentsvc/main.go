@@ -63,7 +63,7 @@ func main() {
 	errc := make(chan error)
 	ctx := context.Background()
 
-	handler, logger := payment.WireUp(ctx, float32(*declineAmount), tracer)
+	handler, logger := payment.WireUp(ctx, float32(*declineAmount), tracer, ServiceName)
 
 	// Create and launch the HTTP server.
 	go func() {
