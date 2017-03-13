@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-// Middleware decorates a service.
-type Middleware func(Service) Service
-
 // LoggingMiddleware logs method calls, parameters, results, and elapsed time.
 func LoggingMiddleware(logger log.Logger) Middleware {
 	return func(next Service) Service {

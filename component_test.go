@@ -16,7 +16,7 @@ func TestComponent(t *testing.T) {
 	// Mechanical stuff.
 	ctx := context.Background()
 
-	handler, logger := WireUp(ctx, float32(99.99), opentracing.GlobalTracer())
+	handler, logger := WireUp(ctx, float32(99.99), opentracing.GlobalTracer(), "test")
 
 	ts := httptest.NewServer(handler)
 	defer ts.Close()

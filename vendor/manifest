@@ -95,6 +95,14 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/felixge/httpsnoop",
+			"repository": "https://github.com/felixge/httpsnoop",
+			"vcs": "git",
+			"revision": "287b56e9e314227d3113c7c6b434d31aec68089d",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/go-kit/kit/circuitbreaker",
 			"repository": "https://github.com/go-kit/kit",
 			"vcs": "git",

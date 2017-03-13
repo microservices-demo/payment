@@ -10,9 +10,10 @@ import (
 	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 	stdopentracing "github.com/opentracing/opentracing-go"
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
+	"github.com/microservices-demo/payment/middleware"
 )
 
-func WireUp(ctx context.Context, declineAmount float32, tracer stdopentracing.Tracer) (http.Handler, log.Logger) {
+func WireUp(ctx context.Context, declineAmount float32, tracer stdopentracing.Tracer, serviceName string) (http.Handler, log.Logger) {
 	// Log domain.
 	var logger log.Logger
 	{
@@ -49,6 +50,18 @@ func WireUp(ctx context.Context, declineAmount float32, tracer stdopentracing.Tr
 	// Endpoint domain.
 	endpoints := MakeEndpoints(service, tracer)
 
-	handler := MakeHTTPHandler(ctx, endpoints, logger, tracer)
+	router := MakeHTTPHandler(ctx, endpoints, logger, tracer)
+
+	httpMiddleware := []middleware.Interface{
+		middleware.Instrument{
+			Duration:     middleware.HTTPLatency,
+			RouteMatcher: router,
+			Service:      serviceName,
+		},
+	}
+
+	// Handler
+	handler := middleware.Merge(httpMiddleware...).Wrap(router)
+
 	return handler, logger
 }
