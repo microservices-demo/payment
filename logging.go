@@ -2,7 +2,6 @@ package payment
 
 import (
 	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/metrics"
 	"time"
 )
 
@@ -41,37 +40,4 @@ func (mw loggingMiddleware) Health() (health []Health) {
 		)
 	}(time.Now())
 	return mw.next.Health()
-}
-
-type instrumentingService struct {
-	requestCount   metrics.Counter
-	requestLatency metrics.Histogram
-	Service
-}
-
-// NewInstrumentingService returns an instance of an instrumenting Service.
-func NewInstrumentingService(requestCount metrics.Counter, requestLatency metrics.Histogram, s Service) Service {
-	return &instrumentingService{
-		requestCount:   requestCount,
-		requestLatency: requestLatency,
-		Service:        s,
-	}
-}
-
-func (s *instrumentingService) Authorise(amount float32) (auth Authorisation, err error) {
-	defer func(begin time.Time) {
-		s.requestCount.With("method", "authorise").Add(1)
-		s.requestLatency.With("method", "authorise").Observe(time.Since(begin).Seconds())
-	}(time.Now())
-
-	return s.Service.Authorise(amount)
-}
-
-func (s *instrumentingService) Health() []Health {
-	defer func(begin time.Time) {
-		s.requestCount.With("method", "health").Add(1)
-		s.requestLatency.With("method", "health").Observe(time.Since(begin).Seconds())
-	}(time.Now())
-
-	return s.Service.Health()
 }
