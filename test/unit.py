@@ -13,7 +13,7 @@ class GoServices(unittest.TestCase):
             '-v', code_dir + ':/go/src/github.com/microservices-demo/payment',
             '-w', '/go/src/github.com/microservices-demo/payment',
             '-e', 'GOPATH=/go/',
-            'golang:1.6',
+            'golang:1.7',
             'go', 'test', '-v', '-covermode=count', '-coverprofile=coverage.out'
         ]
 

@@ -7,9 +7,22 @@ import (
 	"github.com/go-kit/kit/log"
 	"golang.org/x/net/context"
 
-	"github.com/microservices-demo/payment/middleware"
 	stdopentracing "github.com/opentracing/opentracing-go"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/weaveworks/common/middleware"
 )
+
+var (
+	HTTPLatency = prometheus.NewHistogramVec(prometheus.HistogramOpts{
+		Name:    "request_duration_seconds",
+		Help:    "Time (in seconds) spent serving HTTP requests.",
+		Buckets: prometheus.DefBuckets,
+	}, []string{"method", "route", "status_code", "isWS"})
+)
+
+func init() {
+	prometheus.MustRegister(HTTPLatency)
+}
 
 func WireUp(ctx context.Context, declineAmount float32, tracer stdopentracing.Tracer, serviceName string) (http.Handler, log.Logger) {
 	// Log domain.
@@ -34,9 +47,8 @@ func WireUp(ctx context.Context, declineAmount float32, tracer stdopentracing.Tr
 
 	httpMiddleware := []middleware.Interface{
 		middleware.Instrument{
-			Duration:     middleware.HTTPLatency,
+			Duration:     HTTPLatency,
 			RouteMatcher: router,
-			Service:      serviceName,
 		},
 	}
 
