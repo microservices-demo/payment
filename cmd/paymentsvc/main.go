@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/go-kit/kit/log"
@@ -35,6 +37,15 @@ func main() {
 			logger = log.NewContext(logger).With("ts", log.DefaultTimestampUTC)
 			logger = log.NewContext(logger).With("caller", log.DefaultCaller)
 		}
+		// Find service local IP.
+		conn, err := net.Dial("udp", "8.8.8.8:80")
+		if err != nil {
+			logger.Log("err", err)
+			os.Exit(1)
+		}
+		localAddr := conn.LocalAddr().(*net.UDPAddr)
+		host := strings.Split(localAddr.String(), ":")[0]
+		defer conn.Close()
 		if *zip == "" {
 			tracer = stdopentracing.NoopTracer{}
 		} else {
@@ -49,7 +60,7 @@ func main() {
 				os.Exit(1)
 			}
 			tracer, err = zipkin.NewTracer(
-				zipkin.NewRecorder(collector, false, fmt.Sprintf("localhost:%v", port), ServiceName),
+				zipkin.NewRecorder(collector, false, fmt.Sprintf("%v:%v", host, port), ServiceName),
 			)
 			if err != nil {
 				logger.Log("err", err)
