@@ -25,7 +25,7 @@ func main() {
 	var (
 		port          = flag.String("port", "8080", "Port to bind HTTP listener")
 		zip           = flag.String("zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
-		declineAmount = flag.Float64("decline", 100, "Decline payments over certain amount")
+		declineAmount = flag.Float64("decline", 105, "Decline payments over certain amount")
 	)
 	flag.Parse()
 	var tracer stdopentracing.Tracer
