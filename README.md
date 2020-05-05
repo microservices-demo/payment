@@ -17,10 +17,15 @@ Checkout the API Spec [here](http://microservices-demo.github.io/api/index?url=h
 ## Build
 
 #### Dependencies
+
+This project uses `gvt` for dependency management, which is outdated.
+Instead, use Go modules:
+
 ```
-cd $GOPATH/src/github.com/microservices-demo/payment/
-go get -u github.com/FiloSottile/gvt
-gvt restore
+go clone https://github.com/microservices-demo/payment
+cd payment/
+go mod init
+go mod vendor
 ```
 
 #### Using native Go tools
@@ -28,7 +33,7 @@ In order to build the project locally you need to make sure that the repository 
 $GOPATH directory: $GOPATH/src/github.com/microservices-demo/payment/. Once that is in place you can build by running:
 
 ```
-cd $GOPATH/src/github.com/microservices-demo/payment/paymentsvc/
+cd ./cmd/paymentsvc/
 go build -o payment
 ```
 
