@@ -28,9 +28,9 @@ go mod init
 go mod vendor
 ```
 
-#### Using native Go tools
-In order to build the project locally you need to make sure that the repository directory is located in the correct
-$GOPATH directory: $GOPATH/src/github.com/microservices-demo/payment/. Once that is in place you can build by running:
+#### Compile
+
+You can compile by running:
 
 ```
 cd ./cmd/paymentsvc/
