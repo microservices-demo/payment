@@ -22,7 +22,7 @@ This project uses `gvt` for dependency management, which is outdated.
 Instead, use Go modules:
 
 ```
-go clone https://github.com/microservices-demo/payment
+git clone https://github.com/microservices-demo/payment
 cd payment/
 go mod init
 go mod vendor
