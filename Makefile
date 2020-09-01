@@ -7,7 +7,7 @@ default: test
 
 copy:
 	docker create --name $(INSTANCE) $(NAME)-dev
-	docker cp $(INSTANCE):/app/main $(shell pwd)/app
+	docker cp $(INSTANCE):/app $(shell pwd)/app
 	docker rm $(INSTANCE)
 
 release:
