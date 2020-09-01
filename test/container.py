@@ -31,14 +31,14 @@ class PaymentContainerTest(unittest.TestCase):
 
     def test_api_validated(self):
         limit = 30
-        while Api().noResponse('http://' + self.ip + ':80/payments/'):
+        while Api().noResponse('http://' + self.ip + ':8080/payments/'):
             if limit == 0:
                 self.fail("Couldn't get the API running")
             limit = limit - 1
             sleep(1)
         
         out = Dredd().test_against_endpoint("payment",
-                                            'http://' + self.ip + ':80/',
+                                            'http://' + self.ip + ':8080/',
                                             links=[self.container_name],
                                             dump_streams=True)
         
