@@ -22,6 +22,7 @@ class PaymentContainerTest(unittest.TestCase):
                    '-d',
                    '--name', PaymentContainerTest.container_name,
                    '-h', 'payment',
+                   '-p', '80:8080',
                    'weaveworksdemos/payment-dev:' + self.TAG]
         Docker().execute(command)
         self.ip = Docker().get_container_ip(PaymentContainerTest.container_name)
