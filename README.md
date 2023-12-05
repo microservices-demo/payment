@@ -1,4 +1,4 @@
-# Payment
+# DEPRECATED: Payment
 [![Build Status](https://travis-ci.org/microservices-demo/payment.svg?branch=master)](https://travis-ci.org/microservices-demo/payment)
 [![Coverage Status](https://coveralls.io/repos/github/microservices-demo/payment/badge.svg?branch=master)](https://coveralls.io/github/microservices-demo/payment?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/microservices-demo/user)](https://goreportcard.com/report/github.com/microservices-demo/user)
